@@ -2,7 +2,7 @@
 This script is for getting activity information from Strava.
 Use Case: Data Analysis
 Author: Xaver Heuser (xaver.heuser@gmail.com)
-Date: 14.10.2024
+Date: 15.10.2024
 
 Link to Stra API: https://developers.strava.com/docs/reference/
 
@@ -13,12 +13,21 @@ import urllib3
 import json
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-# Config
+
+################################
+# Read Config File
+################################
+
 with open('config.json', 'r') as f:
     config = json.load(f)
 
 activities_url = config['links']['activities']
 auth_url = config['links']['auth']
+
+
+################################
+# Authentication
+################################
 
 payload = {
     'client_id': config['client_id'],
@@ -34,6 +43,11 @@ access_token = res.json()['access_token']
 print("Access Token = {} \n".format(access_token))
 
 header = {'Authorization': 'Bearer ' + access_token}
+
+
+################################
+# Request Activities
+################################
 
 # The first loop, request_page_number will be set to one, so it requests the first page. Increment this number after
 # each request, so the next time we request the second page, then third, and so on...
@@ -66,4 +80,3 @@ for activity in all_activities:
     print(activity['distance']/1000, 'km')
     print(activity['elapsed_time']/60, 'min')
     print(10*'=')
-
