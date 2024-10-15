@@ -1,0 +1,26 @@
+Strava API:
+
+Instruction: https://developers.strava.com/docs/getting-started/
+
+1) Get authorizations code from authorization page. This is a one time, manual step.
+Paste the below code in a browser, hit enter then grab the "code" part from the resulting url
+
+-> http://localhost/?state=&code=55b825fac4e2c352c8c19be7926bf2dca99a56d2&scope=read,activity:read_all
+
+2) Exchange authorization code for access token & refresh token (Postman)
+
+https://www.strava.com/oauth/token?client_id=137549&client_secret=1184ee4b53c17a4caec26f1fe6b1f0169d1136a4&code=55b825fac4e2c352c8c19be7926bf2dca99a56d2&grant_type=authorization_code
+
+3) View your activities using the access token just received
+
+https://www.strava.com/api/v3/athlete/activities?access_token=f078e3f3972b016b93f982b5148a08c3089373f1
+
+4) Use refresh token to get new access tokens
+
+https://www.strava.com/oauth/token?client_id=137549&client_secret=1184ee4b53c17a4caec26f1fe6b1f0169d1136a4&refresh_token=c7b0516c8801fde1965ea36e40428b81941ba448&grant_type=refresh_token
+
+-> 3) and 4) are gonna be in your code
+
+
+
+
