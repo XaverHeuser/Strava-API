@@ -11,6 +11,7 @@ Link to Stra API: https://developers.strava.com/docs/reference/
 import requests
 import urllib3
 import json
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
@@ -56,19 +57,20 @@ all_activities = []
 
 while True:
     param = {'per_page': 200, 'page': request_page_num}
-    # initial request, where we request the first page of activities
-    my_dataset = requests.get(activities_url, headers=header, params=param).json()
+    response = requests.get(activities_url, headers=header, params=param).json()
 
-    # check the response to make sure it is not empty. If it is empty, that means there is no more data left. So if you have
-    # 1000 activities, on the 6th request, where we request page 6, there would be no more data left, so we will break out of the loop
+    if response.status_code != 200:
+        print(f"Error: Status code {response.status_code}")
+        break  # Exit the loop if there's an error
+
+    my_dataset = response.json()
+
     if len(my_dataset) == 0:
         break
 
-    # if the all_activities list is already populated, that means we want to add additional data to it via extend.
     if all_activities:
         all_activities.extend(my_dataset)
 
-    # if the all_activities is empty, this is the first time adding data so we just set it equal to my_dataset
     else:
         all_activities = my_dataset
 
